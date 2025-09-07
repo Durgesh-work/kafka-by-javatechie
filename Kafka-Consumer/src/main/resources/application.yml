@@ -6,3 +6,10 @@ spring:
     bootstrap-servers: localhost:9092
     consumer:
       group-id: jt-group-1
+
+logging:
+  file:
+    name: logs/consumer-log.txt
+  level:
+    root: ERROR
+    com.consumer.service.KafkaMessageListener: INFO
