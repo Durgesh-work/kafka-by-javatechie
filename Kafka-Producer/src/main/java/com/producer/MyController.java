@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.producer.dto.Customer;
@@ -36,5 +37,11 @@ public class MyController {
 	public ResponseEntity<?> publishEvent(@RequestBody Customer customer){
 		kafkaMessagePublisher.sendEvents(customer);
 		return ResponseEntity.ok("event sent: "+ customer.toString());
+	}
+	
+	@PostMapping("/publishtopartition")
+	public ResponseEntity<?> publishToPartition(@RequestBody String msg ){
+		kafkaMessagePublisher.sendDataToPartition(msg);
+		return ResponseEntity.ok("message sent");
 	}
 }

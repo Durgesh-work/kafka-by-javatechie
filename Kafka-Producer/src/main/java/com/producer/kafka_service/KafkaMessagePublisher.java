@@ -15,6 +15,9 @@ public class KafkaMessagePublisher {
 
 	@Autowired
 	private KafkaTemplate<String, Object> template;
+	
+	@Autowired
+	private KafkaTemplate<String, String> stringKafkaTemplate;
 
 	public void sendMessageToKafkaTopic(String msg) {
 		CompletableFuture<SendResult<String, Object>> send = template.send("newTopic2", msg);
@@ -43,5 +46,23 @@ public class KafkaMessagePublisher {
 			System.out.println(e.getMessage());
 		}
 
+	}
+	
+	public void sendDataToPartition(String msg) {
+		try {
+			CompletableFuture<SendResult<String, String>> send1 = stringKafkaTemplate.send("replication-topic1", 1, null, msg+" :partition1");
+			CompletableFuture<SendResult<String, String>> send = stringKafkaTemplate.send("replication-topic1", 2, null, msg+" :partition2");
+			
+			send.whenComplete((result, ex) ->{
+				if(ex == null) {
+					System.out.println(result.toString());
+				}
+				else {
+					System.out.println(ex.getMessage());
+				}
+			});
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
