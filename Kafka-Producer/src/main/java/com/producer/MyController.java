@@ -44,4 +44,10 @@ public class MyController {
 		kafkaMessagePublisher.sendDataToPartition(msg);
 		return ResponseEntity.ok("message sent");
 	}
+	
+	@PostMapping("/sendIP")
+	public ResponseEntity<?> sendIP(@RequestBody String IP){
+		kafkaMessagePublisher.sendIPAddress(IP);
+		return ResponseEntity.ok("IP sent to Kakfa broker.");
+	}
 }

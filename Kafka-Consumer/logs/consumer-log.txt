@@ -1,1 +1,0 @@
-2025-09-10T11:59:38.149+05:30  INFO 10160 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.consumer.service.KafkaMessageListener  : msg consumed: "hello world :partition2"

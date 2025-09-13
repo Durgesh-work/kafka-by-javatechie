@@ -8,6 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.StringKeySerializer;
 import com.producer.dto.Customer;
 
 @Service
@@ -63,6 +64,28 @@ public class KafkaMessagePublisher {
 			});
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void sendIPAddress(String IP) {
+		try {
+			CompletableFuture<SendResult<String, String>> send = stringKafkaTemplate.send("restrictedIp-topic", IP);
+			try {
+				send.whenComplete((result, ex) -> {
+					if(ex == null) {
+						System.out.println("IP is sent");
+					}
+					else {
+						System.out.println("IP get a problem: "+ ex.getMessage());
+					}
+				});
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		catch (Exception e) {
+			System.out.println("error occured: "+ e.getMessage());
 		}
 	}
 }
